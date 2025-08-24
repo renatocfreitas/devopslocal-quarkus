@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quarkus-service
+spec:
+  # O tipo de Service. "NodePort" é ideal para o Kind, pois expõe o serviço
+  # em uma porta no nó (a sua máquina local, neste caso).
+  type: NodePort
+  selector:
+    # O seletor conecta o Service aos Pods. Ele deve corresponder
+    # aos "labels" definidos no Deployment.
+    app: quarkus-app
+  ports:
+    # A porta que o Service irá expor. O Kind mapeará esta porta para uma porta
+    # aleatória na sua máquina.
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    name: http
