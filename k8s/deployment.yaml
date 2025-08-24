@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-app
+  labels:
+    app: quarkus-app
+spec:
+  # Define quantas réplicas do Pod o Kubernetes deve manter em execução.
+  # Para o ambiente de desenvolvimento, 1 réplica é suficiente.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quarkus-app
+  template:
+    metadata:
+      labels:
+        app: quarkus-app
+    spec:
+      containers:
+        # Define o container principal do Pod.
+      - name: quarkus-app
+        # Nome da imagem Docker que será usada.
+        # Note que o nome aqui deve ser o mesmo que você usará no seu build.
+        image: quarkus-app:latest
+        ports:
+          # A porta que o container irá expor para o tráfego de rede.
+        - containerPort: 8080
+        # Configurações de recursos para o Pod.
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
