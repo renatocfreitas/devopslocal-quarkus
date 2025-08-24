@@ -21,7 +21,7 @@ spec:
       - name: quarkus-app
         # Nome da imagem Docker que será usada.
         # Note que o nome aqui deve ser o mesmo que você usará no seu build.
-        image: quarkus-app:latest
+        image: quarkus-app:1.0.0
         ports:
           # A porta que o container irá expor para o tráfego de rede.
         - containerPort: 8080
