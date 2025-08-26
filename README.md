@@ -1,9 +1,10 @@
 # devopslocal-quarkus
 O objetivo é automatizar a implantação de uma aplicação Quarkus em um ambiente Kubernetes local, utilizando ferramentas de automação, simulando uma pipeline completa de entrega contínua. Esse desafio foca em práticas de DevOps, como entrega contínua, versionamento, e infraestrutura como código.
+
 1. Título e Descrição do Projeto
 Título: Desafio Técnico: Implantação Automatizada em Ambiente Orquestrado
 
-Descrição: Uma breve introdução do que o projeto faz, mencionando o objetivo de automatizar o CI/CD de uma aplicação Quarkus em um cluster Kubernetes local, usando ferramentas como Kind, Docker e shell scripting.
+Descrição: Este projeto objetiva automatizar o CI/CD de uma aplicação Quarkus em um cluster Kubernetes local, utilizando como o Kind, Docker e Shell scripting.
 
 2. Arquitetura da Solução
 Diagrama: Se possível, inclua um diagrama simples mostrando o fluxo da pipeline.
@@ -16,11 +17,11 @@ Build/Docker: Onde a imagem é criada.
 
 Kind (Kubernetes): Onde a imagem é implantada.
 
-Componentes: Liste as ferramentas e tecnologias utilizadas e por que foram escolhidas:
+Componentes: 
 
-Aplicação: Quarkus Quickstart (getting-started)
+Aplicação: Quarkus Quickstart (getting-started), oferecida pelo desafio.
 
-Cluster K8s: Kind (Kubernetes in Docker)
+Cluster K8s: Kind (Kubernetes in Docker), para implementação do ambiente Kubernetes local, simulando pods em containers Docker.
 
 Containerização: Docker
 
@@ -31,19 +32,33 @@ Versionamento: Git
 3. Pré-requisitos e Instalação
 Esta seção é crucial para a reprodutibilidade do seu projeto.
 
-Ambiente: Indique o ambiente de desenvolvimento usado (Ex: Windows 11 com WSL2/Ubuntu).
+Ambiente: Windows 11 Pro com WSL2/Ubuntu
 
 Ferramentas Necessárias:
 
-Git: Link para a instalação.
+Git: Link para a instalação: https://git-scm.com/downloads
 
-Docker Desktop: Mencione que ele já inclui o Docker CLI e a integração com o WSL2.
+Docker Desktop: Inclui o Docker CLI e a integração com o WSL2 (no docker desktop, configure a integração em Settings - Resources - WSL integration). Link para instalação: https://docs.docker.com/desktop/setup/install/windows-install/
 
-Kind: Inclua o comando de instalação direta, como discutimos.
+Kind: 
+Conforme o link https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries, para instalar o Kind no Windows, execute os dois comandos abaixo no PowerShell Administrador:
+C:>curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.29.0/kind-windows-amd64
+C:>Move-Item .\kind-windows-amd64.exe .\kind.exe
 
-kubectl: Inclua o comando para instalar via apt no WSL2.
+Mova o executável para o caminho desejado Ex.: C:\tools\kind\kind.exe.
+Em seguida, configure o PATH do Windows adicionando este caminho.
+Para configurar o PATH, no prompt do Power Shell Administrator:
+PS> $env:Path += ";C:\tools\kind"
 
-Maven: Inclua o comando de instalação via apt.
+Para persistir o novo caminho no registro do Windows, no prompt do Power Shell Administrator:
+PS> [System.Environment]::SetEnvironmentVariable('PATH', $env:Path, 'Machine')
+
+Para verificar o novo caminho no PATH, no prompt do Power Shell:
+PS> $env:PATH
+
+kubectl: Para instalar, execute no prompt WSL2: sudo apt-get install -y kubectl
+
+Maven: Para instalar, execute no prompt WSL2: sudo apt-get install -y maven
 
 Configuração: Explique como garantir que o PATH está configurado corretamente para o kind.exe e como o kubectl no WSL2 se conecta ao cluster.
 
