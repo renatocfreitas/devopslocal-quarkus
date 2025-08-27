@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quarkus-service-prd
+spec:
+  # Use o tipo de serviço NodePort para exposição
+  type: NodePort
+  selector:
+    # O seletor deve corresponder aos labels do Deployment de produção
+    app: quarkus-app-prd
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    name: http

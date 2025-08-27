@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-app-prd
+  labels:
+    app: quarkus-app-prd
+spec:
+  # Aumente o número de réplicas para o ambiente de produção
+  replicas: 3
+  selector:
+    matchLabels:
+      app: quarkus-app-prd
+  template:
+    metadata:
+      labels:
+        app: quarkus-app-prd
+    spec:
+      containers:
+      - name: quarkus-app-prd
+        image: quarkus-app:1.0.0
+        ports:
+        - containerPort: 8080
+        # Aumente os limites de CPU e memória para o ambiente de produção
+        resources:
+          limits:
+            cpu: "1.0"
+            memory: "1024Mi"
+          requests:
+            cpu: "0.5"
+            memory: "512Mi"
