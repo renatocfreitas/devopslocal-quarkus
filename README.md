@@ -1,109 +1,214 @@
-# devopslocal-quarkus
-O objetivo é automatizar a implantação de uma aplicação Quarkus em um ambiente Kubernetes local, utilizando ferramentas de automação, simulando uma pipeline completa de entrega contínua. Esse desafio foca em práticas de DevOps, como entrega contínua, versionamento, e infraestrutura como código.
+devopslocal-quarkus
+O objetivo deste projeto é automatizar a implantação de uma aplicação Quarkus em um ambiente Kubernetes local, utilizando ferramentas de automação, simulando uma pipeline completa de entrega contínua. Esse desafio foca em práticas de DevOps, como entrega contínua, versionamento, e infraestrutura como código.
 
 1. Título e Descrição do Projeto
 Título: Desafio Técnico: Implantação Automatizada em Ambiente Orquestrado
 
-Descrição: Este projeto objetiva automatizar o CI/CD de uma aplicação Quarkus em um cluster Kubernetes local, utilizando como o Kind, Docker e Shell scripting.
+Descrição: Este projeto visa automatizar o CI/CD (Continuous Integration/Continuous Delivery) de uma aplicação Quarkus em um cluster Kubernetes local, utilizando ferramentas como Kind, Docker e Shell scripting. A pipeline simula as etapas de build, containerização e implantação, garantindo um processo de entrega contínua eficiente e reprodutível.
 
 2. Arquitetura da Solução
-Diagrama: Se possível, inclua um diagrama simples mostrando o fluxo da pipeline.
+Diagrama de Fluxo da Pipeline:
 
-Git: Onde o código-fonte reside.
+Snippet de código
 
-Pipeline (Script Bash): O orquestrador da pipeline.
+graph TD
+    A[Código-Fonte] --> B(Pipeline - Shell Script);
+    B --> C[Construção da Imagem Docker];
+    C --> D[Criação e Implantação no Cluster Kind];
+    D --> E[Aplicação em Pods e Services];
+    E --> F(Acesso à Aplicação);
 
-Build/Docker: Onde a imagem é criada.
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#ccf,stroke:#333,stroke-width:2px
+    style D fill:#ddf,stroke:#333,stroke-width:2px
+    style E fill:#eee,stroke:#333,stroke-width:2px
+    style F fill:#9f9,stroke:#333,stroke-width:2px
+Componentes:
 
-Kind (Kubernetes): Onde a imagem é implantada.
+Aplicação: Quarkus Quickstart (getting-started).
 
-Componentes: 
+Cluster K8s: Kind (Kubernetes in Docker), para simular um ambiente Kubernetes local.
 
-Aplicação: Quarkus Quickstart (getting-started), oferecida pelo desafio.
+Containerização: Docker.
 
-Cluster K8s: Kind (Kubernetes in Docker), para implementação do ambiente Kubernetes local, simulando pods em containers Docker.
+Automação: Shell Scripting (Bash).
 
-Containerização: Docker
-
-Automação: Shell Scripting (Bash)
-
-Versionamento: Git
+Versionamento: Git.
 
 3. Pré-requisitos e Instalação
-Esta seção é crucial para a reprodutibilidade do seu projeto.
-
-Ambiente: Windows 11 Pro com WSL2/Ubuntu
+Esta seção é crucial para a reprodutibilidade do seu projeto. O ambiente de execução utilizado foi o Windows 11 Pro com WSL2/Ubuntu.
 
 Ferramentas Necessárias:
 
-Git: Link para a instalação: https://git-scm.com/downloads
+Git: Para o versionamento do código.
 
-Docker Desktop: Inclui o Docker CLI e a integração com o WSL2 (no docker desktop, configure a integração em Settings - Resources - WSL integration). Link para instalação: https://docs.docker.com/desktop/setup/install/windows-install/
+Instalação: https://git-scm.com/downloads
 
-Kind: 
-Conforme o link https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries, para instalar o Kind no Windows, execute os dois comandos abaixo no PowerShell Administrador:
-C:>curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.29.0/kind-windows-amd64
-C:>Move-Item .\kind-windows-amd64.exe .\kind.exe
+Docker Desktop: Inclui o Docker CLI e a integração com o WSL2.
 
-Mova o executável para o caminho desejado Ex.: C:\tools\kind\kind.exe.
-Em seguida, configure o PATH do Windows adicionando este caminho.
-Para configurar o PATH, no prompt do Power Shell Administrator:
-PS> $env:Path += ";C:\tools\kind"
+Instalação: https://docs.docker.com/desktop/install/windows-install/
 
-Para persistir o novo caminho no registro do Windows, no prompt do Power Shell Administrator:
-PS> [System.Environment]::SetEnvironmentVariable('PATH', $env:Path, 'Machine')
+Configuração: Em Settings > Resources > WSL Integration, certifique-se de que a distribuição Ubuntu está ativada.
 
-Para verificar o novo caminho no PATH, no prompt do Power Shell:
-PS> $env:PATH
+Kind: Para a criação do cluster Kubernetes local.
 
-kubectl: Para instalar, execute no prompt WSL2: sudo apt-get install -y kubectl
+Instalação (no WSL2/Ubuntu):
 
-Maven: Para instalar, execute no prompt WSL2: sudo apt-get install -y maven
+Bash
 
-Configuração: Explique como garantir que o PATH está configurado corretamente para o kind.exe e como o kubectl no WSL2 se conecta ao cluster.
+[ -d /usr/local/bin ] || sudo mkdir -p /usr/local/bin
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+kubectl: A ferramenta de linha de comando para interagir com clusters Kubernetes.
+
+Instalação (no WSL2/Ubuntu):
+
+Bash
+
+sudo apt-get update
+sudo apt-get install -y kubectl
+Maven: A ferramenta de build para o projeto Java (Quarkus).
+
+Instalação (no WSL2/Ubuntu):
+
+Bash
+
+sudo apt-get install -y maven
+Configuração:
+
+O Kind instalado diretamente no WSL2 já adiciona o executável ao seu PATH, garantindo que o seu script bash o encontre.
+
+O kubectl instalado no WSL2 se conectará automaticamente ao cluster Kind criado pelo Docker Desktop, pois o Docker Desktop gerencia o kubeconfig para você.
 
 4. Passo a Passo da Implantação (A Pipeline)
-Esta é a seção que explica a automação. Descreva cada etapa do seu script de pipeline.
+O script ./pipeline_deploy.sh orquestra todas as etapas de implantação.
 
-Passo 1: Clonar o Repositório: git clone <URL_DO_REPOSITÓRIO>
+Passo 1: Construção da Imagem Docker
+O script usa o Dockerfile para compilar o projeto Quarkus e criar uma imagem Docker. O comando docker build lê o Dockerfile, compila a aplicação com o Maven e gera a imagem.
 
-Passo 2: Iniciar o Cluster Kind: kind create cluster
+Passo 2: Provisionamento do Cluster Kind
+O pipeline_deploy.sh cria um cluster Kubernetes local, caso ele ainda não exista.
 
-Passo 3: Construir a Imagem:
+Passo 3: Implantação no Ambiente DES
+O script usa kubectl apply -f k8s/des/ para implantar a aplicação. Este comando lê o arquivo deployment-des.yaml, criando um Deployment e um Service que expõem a aplicação.
 
-Explique o comando mvn package e o Dockerfile.
-
-Mencione a tag da imagem e a estratégia de versionamento.
-
-Passo 4: Implantar no Ambiente DES:
-
-Explique o que é o arquivo deployment-des.yaml.
-
-Mostre o comando kubectl apply -f k8s/des/.
-
-Passo 5: Implantar no Ambiente PRD:
-
-Explique a diferença do deployment-prd.yaml (ex: mais réplicas, diferentes variáveis de ambiente).
-
-Mostre o comando kubectl apply -f k8s/prd/.
+Passo 4: Implantação no Ambiente PRD
+(Se aplicável) Se houver um ambiente de produção simulado, o script usa kubectl apply -f k8s/prd/ para implantar a aplicação. O deployment-prd.yaml pode conter diferenças como um número maior de réplicas e variáveis de ambiente específicas para produção.
 
 5. Estratégia de Versionamento
-Versionamento do Código: Explique que o versionamento segue o fluxo de trabalho do Git (commits, branches, tags).
+Versionamento do Código: Utiliza o Git para gerenciar o código-fonte. Cada alteração é rastreada com commits, e diferentes funcionalidades são desenvolvidas em branches dedicadas.
 
-Versionamento das Imagens: Descreva como as imagens do Docker são tagueadas, por exemplo, usando a versão do aplicativo (v1.0.0) ou um hash do commit (v1.0.0-git-hash).
+Versionamento das Imagens: As imagens Docker são tagueadas para garantir a rastreabilidade. A tag pode ser a versão do aplicativo (v1.0.0), um hash do commit do Git (v1.0.0-git-abcde), ou a data e hora da compilação.
 
 6. Validação e Testes
-Como validar a implantação:
+Para garantir que a implantação foi bem-sucedida, utilize os seguintes comandos:
 
-Comandos kubectl para checar o estado dos pods e serviços: kubectl get pods, kubectl get service.
+Verificação de Pods e Deployments:
 
-Como obter a URL de acesso à aplicação (ex: kubectl port-forward ... ou minikube service ...).
+Bash
 
-Testes de Conectividade: Inclua comandos curl para verificar se a aplicação está respondendo.
+kubectl get pods
+kubectl get deployments
+Obtenção da URL de Acesso:
 
+Bash
+
+kubectl get service quarkus-service
+A URL de acesso será http://localhost:<porta-NodePort>, onde <porta-NodePort> é o valor listado na saída do comando acima (ex.: 32387).
+
+Testes de Conectividade:
+Use curl para verificar se a aplicação está respondendo corretamente.
+
+Bash
+
+curl http://localhost:<porta-NodePort>/hello
 7. Apêndices e Códigos
-Scripts de Automação: Crie uma subseção para cada script (no seu caso, o pipeline-deploy.sh). Cole o código e inclua comentários curtos para cada comando.
+pipeline_deploy.sh
+Bash
 
-Arquivos YAML: Inclua o conteúdo dos arquivos deployment-des.yaml e deployment-prd.yaml.
+#!/bin/bash
 
-Dockerfile: Inclua o Dockerfile final que você construiu.
+# --- Passo 1: Construindo a Imagem Docker ---
+echo "--- Passo 1: Construindo a Imagem Docker ---"
+docker build -t quarkus-app:1.0.0 .
+
+# --- Passo 2: Provisionando o Cluster Kind ---
+echo "--- Passo 2: Provisionando o Cluster Kind ---"
+kind create cluster --wait 30s || true
+
+# --- Passo 3: Implantando no ambiente de DES ---
+echo "--- Passo 3: Implantando no ambiente de DES ---"
+kubectl apply -f k8s/des/
+
+# --- Passo 4: Verificando o status da implantação ---
+echo "--- Passo 4: Verificando o status da implantação ---"
+kubectl get pods
+kubectl get services
+
+# --- Passo 5: Acessando a aplicação ---
+echo "--- Passo 5: Acessando a aplicação ---"
+PORT=$(kubectl get service quarkus-service -o jsonpath='{.spec.ports[0].nodePort}')
+echo "A aplicação de DES está acessível em: http://localhost:${PORT}"
+Dockerfile
+Dockerfile
+
+# ---- ETAPA 1: Construção (BUILD) ----
+FROM eclipse-temurin:17-jdk-focal AS build
+
+WORKDIR /build
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+
+RUN chmod +x mvnw
+
+RUN ./mvnw package -Dquarkus.package.type=uber-jar -DskipTests
+
+# ---- ETAPA 2: Execução (RUN) ----
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+COPY --from=build /build/target/getting-started-1.0.0-SNAPSHOT-runner.jar ./quarkus-app.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "quarkus-app.jar"]
+k8s/des/deployment-des.yaml (Exemplo)
+YAML
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quarkus-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quarkus-app
+  template:
+    metadata:
+      labels:
+        app: quarkus-app
+    spec:
+      containers:
+      - name: quarkus-app
+        image: quarkus-app:1.0.0
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quarkus-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: quarkus-app
