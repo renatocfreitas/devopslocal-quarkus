@@ -68,6 +68,7 @@ Instalação (no WSL2/Ubuntu):
 Bash
 
 sudo apt-get install -y maven
+
 Configuração:
 
 O Kind instalado diretamente no WSL2 já adiciona o executável ao seu PATH, garantindo que o seu script bash o encontre.
