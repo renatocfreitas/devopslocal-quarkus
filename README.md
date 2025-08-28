@@ -48,27 +48,29 @@ Kind: Para a criação do cluster Kubernetes local.
 Instalação (no WSL2/Ubuntu):
 
 Bash
-
+```
 [ -d /usr/local/bin ] || sudo mkdir -p /usr/local/bin
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
+```
 kubectl: A ferramenta de linha de comando para interagir com clusters Kubernetes.
 
 Instalação (no WSL2/Ubuntu):
 
 Bash
-
+``` 
 sudo apt-get update
 sudo apt-get install -y kubectl
+```
 Maven: A ferramenta de build para o projeto Java (Quarkus).
 
 Instalação (no WSL2/Ubuntu):
 
 Bash
-
+```
 sudo apt-get install -y maven
-
+```
 Configuração:
 
 O Kind instalado diretamente no WSL2 já adiciona o executável ao seu PATH, garantindo que o seu script bash o encontre.
@@ -76,6 +78,7 @@ O Kind instalado diretamente no WSL2 já adiciona o executável ao seu PATH, gar
 O kubectl instalado no WSL2 se conectará automaticamente ao cluster Kind criado pelo Docker Desktop, pois o Docker Desktop gerencia o kubeconfig.
 
 4. Passo a Passo da Implantação (A Pipeline)
+
 O script ./pipeline_deploy.sh orquestra todas as etapas de implantação.
 
 Passo 1: Construção da Imagem Docker
@@ -91,11 +94,13 @@ Passo 4: Implantação no Ambiente PRD
 (Se aplicável) Se houver um ambiente de produção simulado, o script usa kubectl apply -f k8s/prd/ para implantar a aplicação. O deployment-prd.yaml pode conter diferenças como um número maior de réplicas e variáveis de ambiente específicas para produção.
 
 5. Estratégia de Versionamento
+
 Versionamento do Código: Utiliza o Git para gerenciar o código-fonte. Cada alteração é rastreada com commits, e diferentes funcionalidades são desenvolvidas em branches dedicadas.
 
 Versionamento das Imagens: As imagens Docker são tagueadas para garantir a rastreabilidade. A tag pode ser a versão do aplicativo (v1.0.0), um hash do commit do Git (v1.0.0-git-abcde), ou a data e hora da compilação.
 
 6. Validação e Testes
+
 Para garantir que a implantação foi bem-sucedida, utilize os seguintes comandos:
 
 Verificação de Pods e Deployments:
@@ -117,7 +122,9 @@ Use curl para verificar se a aplicação está respondendo corretamente.
 Bash
 
 curl http://localhost:<porta-NodePort>/hello
+
 7. Apêndices e Códigos
+
 pipeline_deploy.sh
 Bash
 ```
