@@ -139,7 +139,7 @@ Defina a porta 8080 para associar a porta do pod à porta da máquina.
 $ kubectl port-forward quarkus-app-67cbc9d64c-6zdxp 8080:8080
 ```
 Em seguida, teste a aplicação.
-Bash
+
 ```
 curl http://localhost:<porta-NodePort>/hello
 ```
