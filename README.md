@@ -106,24 +106,42 @@ Para garantir que a implantação foi bem-sucedida, utilize os seguintes comando
 Verificação de Pods e Deployments:
 
 Bash
-
+```
 kubectl get pods
 kubectl get deployments
+``` 
 Obtenção da URL de Acesso:
 
 Bash
-
+```
 kubectl get service quarkus-service
-A URL de acesso será http://localhost:<porta-NodePort>, onde <porta-NodePort> é o valor listado na saída do comando acima (ex.: 32387).
+```
+A URL de acesso será 
+```
+http://localhost:<porta-NodePort>
+```
+, onde porta-NodePort é o valor listado na saída do comando acima (ex.: 8080).
 
 Testes de Conectividade:
 Use curl para verificar se a aplicação está respondendo corretamente.
 
+Verifique o pod.
+```
+$ kubectl get pods
+NAME                           READY   STATUS    RESTARTS   AGE
+quarkus-app-67cbc9d64c-6zdxp   1/1     Running   0          28m
+```
+Defina a porta 8080 para associar a porta do pod à porta da máquina.
+```
+$ kubectl port-forward quarkus-app-67cbc9d64c-6zdxp 8080:8080
+```
+Em seguida, teste a aplicação.
 Bash
-
+```
 curl http://localhost:<porta-NodePort>/hello
+```
 
-7. Apêndices e Códigos
+7. Apêndices e Códigos resumidos
 
 pipeline_deploy.sh
 Bash
