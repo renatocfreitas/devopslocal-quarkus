@@ -1,11 +1,13 @@
 O objetivo deste projeto é automatizar a implantação de uma aplicação Quarkus em um ambiente Kubernetes local, utilizando ferramentas de automação, simulando uma pipeline completa de entrega contínua. Esse desafio foca em práticas de DevOps, como entrega contínua, versionamento, e infraestrutura como código.
 
 1. Título e Descrição do Projeto
+
 Título: Desafio Técnico: Implantação Automatizada em Ambiente Orquestrado
 
 Descrição: Este projeto visa automatizar o CI/CD (Continuous Integration/Continuous Delivery) de uma aplicação Quarkus em um cluster Kubernetes local, utilizando ferramentas como Kind, Docker e Shell scripting. A pipeline simula as etapas de build, containerização e implantação, garantindo um processo de entrega contínua eficiente e reprodutível.
 
 2. Arquitetura da Solução
+
 Diagrama de Fluxo da Pipeline:
 
 Fluxo do pipeline esquematizado:
@@ -17,6 +19,7 @@ D --> E[Aplicação em Pods e Services];
 E --> F(Acesso à Aplicação);
 
 Componentes:
+
 Aplicação: Quarkus Quickstart (getting-started).
 
 Cluster K8s: Kind (Kubernetes in Docker), para simular um ambiente Kubernetes local.
@@ -28,6 +31,7 @@ Automação: Shell Scripting (Bash).
 Versionamento: Git.
 
 3. Pré-requisitos e Instalação
+
 O ambiente de execução utilizado foi o Windows 11 Pro com WSL2/Ubuntu.
 
 Ferramentas Necessárias:
