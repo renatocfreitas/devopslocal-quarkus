@@ -120,7 +120,7 @@ curl http://localhost:<porta-NodePort>/hello
 7. Apêndices e Códigos
 pipeline_deploy.sh
 Bash
-
+```
 #!/bin/bash
 
 # --- Passo 1: Construindo a Imagem Docker ---
@@ -144,9 +144,11 @@ kubectl get services
 echo "--- Passo 5: Acessando a aplicação ---"
 PORT=$(kubectl get service quarkus-service -o jsonpath='{.spec.ports[0].nodePort}')
 echo "A aplicação de DES está acessível em: http://localhost:${PORT}"
-Dockerfile
+```
+
 Dockerfile
 
+```
 # ---- ETAPA 1: Construção (BUILD) ----
 FROM eclipse-temurin:17-jdk-focal AS build
 
@@ -205,3 +207,4 @@ spec:
     targetPort: 8080
   selector:
     app: quarkus-app
+```
