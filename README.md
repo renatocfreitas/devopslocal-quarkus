@@ -1,4 +1,3 @@
-devopslocal-quarkus
 O objetivo deste projeto é automatizar a implantação de uma aplicação Quarkus em um ambiente Kubernetes local, utilizando ferramentas de automação, simulando uma pipeline completa de entrega contínua. Esse desafio foca em práticas de DevOps, como entrega contínua, versionamento, e infraestrutura como código.
 
 1. Título e Descrição do Projeto
