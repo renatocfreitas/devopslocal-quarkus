@@ -9,23 +9,15 @@ Descrição: Este projeto visa automatizar o CI/CD (Continuous Integration/Conti
 2. Arquitetura da Solução
 Diagrama de Fluxo da Pipeline:
 
-Snippet de código
+Fluxo do pipeline esquematizado:
 
-graph TD
-    A[Código-Fonte] --> B(Pipeline - Shell Script);
-    B --> C[Construção da Imagem Docker];
-    C --> D[Criação e Implantação no Cluster Kind];
-    D --> E[Aplicação em Pods e Services];
-    E --> F(Acesso à Aplicação);
+A[Código-Fonte] --> B(Pipeline - Shell Script);
+B --> C[Construção da Imagem Docker];
+C --> D[Criação e Implantação no Cluster Kind];
+D --> E[Aplicação em Pods e Services];
+E --> F(Acesso à Aplicação);
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#ccf,stroke:#333,stroke-width:2px
-    style D fill:#ddf,stroke:#333,stroke-width:2px
-    style E fill:#eee,stroke:#333,stroke-width:2px
-    style F fill:#9f9,stroke:#333,stroke-width:2px
 Componentes:
-
 Aplicação: Quarkus Quickstart (getting-started).
 
 Cluster K8s: Kind (Kubernetes in Docker), para simular um ambiente Kubernetes local.
@@ -80,7 +72,7 @@ Configuração:
 
 O Kind instalado diretamente no WSL2 já adiciona o executável ao seu PATH, garantindo que o seu script bash o encontre.
 
-O kubectl instalado no WSL2 se conectará automaticamente ao cluster Kind criado pelo Docker Desktop, pois o Docker Desktop gerencia o kubeconfig para você.
+O kubectl instalado no WSL2 se conectará automaticamente ao cluster Kind criado pelo Docker Desktop, pois o Docker Desktop gerencia o kubeconfig.
 
 4. Passo a Passo da Implantação (A Pipeline)
 O script ./pipeline_deploy.sh orquestra todas as etapas de implantação.
