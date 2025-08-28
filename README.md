@@ -37,7 +37,7 @@ Automação: Shell Scripting (Bash).
 Versionamento: Git.
 
 3. Pré-requisitos e Instalação
-Esta seção é crucial para a reprodutibilidade do seu projeto. O ambiente de execução utilizado foi o Windows 11 Pro com WSL2/Ubuntu.
+O ambiente de execução utilizado foi o Windows 11 Pro com WSL2/Ubuntu.
 
 Ferramentas Necessárias:
 
